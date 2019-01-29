@@ -43,8 +43,8 @@ const bookmarkList = (function (){
   function renderBaseBottomPanel () {
     return `
     <ul class="bookmarks">
-      <li class="bookmark" data-item-id=${item.id}>
-        Rating ${item.rating} Title ${item.title}
+      <li class="bookmark" data-item-id=item>
+        Rating rating Title title
         <button class="js-collapse" type="button">Details</button>
         <button class= "js-edit" type="button">Edit</button>
         <label for="delete">
@@ -128,4 +128,4 @@ const bookmarkList = (function (){
     render: render
   };
 
-});
+})();
