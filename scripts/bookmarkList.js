@@ -108,10 +108,12 @@ const bookmarkList = (function (){
       const newItemRating = $('.js-rating-input').val();
       $('.js-rating-input').val('');
       const newItem = {
-        'title': newItemTitle,
-        'url': newItemLink,
-        'desc': newItemDescription,
-        'rating': newItemRating, 
+        title : newItemTitle,
+        url : newItemLink,
+        desc : newItemDescription,
+        rating : newItemRating,
+        collapse : false,
+        edit : false
       };
       api.createItem(newItem);
 
@@ -124,8 +126,22 @@ const bookmarkList = (function (){
     $('.js-bottom-panel').html(renderBaseBottomPanel);
   }
 
+  function handleNewItemButton() {
+    $('.js-add-new-button').on('click', () => {
+      $('.js-top-panel').html(renderAddNewTopPanel);
+      $('.js-middle-panel').html(renderBaseMiddlePanel);
+      $('.js-bottom-panel').html(renderBaseBottomPanel);
+    });
+  }
+
+  function bindEventListeners() {
+    handleNewItemButton();
+    handleNewItemSubmit();
+  }
+
   return {
-    render: render
+    render: render,
+    bindEventListeners: bindEventListeners
   };
 
 })();
