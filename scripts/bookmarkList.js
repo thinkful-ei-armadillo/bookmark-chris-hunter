@@ -30,6 +30,7 @@ const bookmarkList = (function (){
     return `
     <form class="js-filter-bookmarks">
       <select name="filter">
+        <option value="All">All</option>
         <option value="5-stars">5 Stars</option>
         <option value="4-stars">4 Stars or higher</option>
         <option value="3-stars">3 Stars or higher</option>
@@ -40,11 +41,11 @@ const bookmarkList = (function (){
     </form>`;
   }
 
-  function renderBaseBottomPanel () {
+  function generateItemElement(item){
     return `
     <ul class="bookmarks">
       <li class="bookmark" data-item-id=item>
-        Rating rating Title title
+        Rating ${item.rating} Title ${item.title}
         <button class="js-collapse" type="button">Details</button>
         <button class= "js-edit" type="button">Edit</button>
         <label for="delete">
@@ -52,6 +53,21 @@ const bookmarkList = (function (){
         </label>  
       </li>
     </ul>`;
+  }
+
+  function generateBookmarkItemsString(bookmarkList){
+    const items = bookmarkList.map((item) => generateItemElement(item));
+    return items.join('');  
+  }
+
+  function renderBaseBottomPanel () {
+    let items = [...store.items];
+
+    const bookmarkListItemsString = generateBookmarkItemsString(items); 
+
+
+    $('.js-bottom-panel').html(bookmarkListItemsString); 
+    
   }
 
   function renderCollapseBottomPanel () {
@@ -97,17 +113,17 @@ const bookmarkList = (function (){
   }
 
   function handleNewItemSubmit(){
-    $('.js-add-item').submit(function(event){
-      event.preventDefault();
-      const newItemTitle = $('.js-title-input').val();
+    $('.js-top-panel').submit(function(event){
+      event.preventDefault(); 
+      let newItemTitle = $('.js-title-input').val();
       $('.js-title-input').val('');
-      const newItemLink = $('.js-link-input').val();
+      let newItemLink = $('.js-link-input').val();
       $('.js-link-input').val('');
-      const newItemDescription = $('.js-description-input').val();
+      let newItemDescription = $('.js-description-input').val();
       $('.js-description-input').val('');
-      const newItemRating = $('.js-rating-input').val();
+      let newItemRating = $('.js-rating-input').val();
       $('.js-rating-input').val('');
-      const newItem = {
+      let newItem = {
         title : newItemTitle,
         url : newItemLink,
         desc : newItemDescription,
@@ -115,8 +131,13 @@ const bookmarkList = (function (){
         collapse : false,
         edit : false
       };
-      api.createItem(newItem);
-
+      api.createItem(newItem)
+        .then((response)=> {
+          response.json();})
+        .then((responseJson)=>{
+          store.addItem(responseJson);
+          bookmarkList.render();  
+        }); 
     });
   }
 

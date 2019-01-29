@@ -10,8 +10,11 @@ const api = (
 
     const createItem = function(newItem){
       const newItemString = JSON.stringify(newItem); 
-    
-      return fetch(`${BASE_URL}`, {method: 'POST',
+      return fetch(`${BASE_URL}`, {
+        method: 'POST',
+        headers: {
+          'Content-type': 'application/json'
+        }, 
         body: newItemString,}); 
     };
 
