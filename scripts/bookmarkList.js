@@ -91,3 +91,25 @@ function renderEditBottomPanel () {
     </li>
   </ul>`;
 }
+
+function handleNewItemSubmit(){
+  $('.js-add-item').submit(function(event){
+    event.preventDefault();
+    const newItemTitle = $('.js-title-input').val();
+    $('.js-title-input').val('');
+    const newItemLink = $('.js-link-input').val();
+    $('.js-link-input').val('');
+    const newItemDescription = $('.js-description-input').val();
+    $('.js-description-input').val('');
+    const newItemRating = $('.js-rating-input').val();
+    $('.js-rating-input').val('');
+    const newItem = {
+      'title': newItemTitle,
+      'url': newItemLink,
+      'desc': newItemDescription,
+      'rating': newItemRating, 
+    }
+    api.createItem(newItem)
+
+  }
+}
