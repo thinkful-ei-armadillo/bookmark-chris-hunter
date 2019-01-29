@@ -1,14 +1,18 @@
+/* global store, $ */
 'use strict';
 
-function renderBaseTopPanel () {
-  return `
+// eslint-disable-next-line no-unused-vars
+const bookmarkList = (function (){
+
+  function renderBaseTopPanel () {
+    return `
     <button class="js-add-new-button" type="button">
     Add New Bookmark
   </button>`;
-}
+  }
 
-function renderAddNewTopPanel () {
-  return `
+  function renderAddNewTopPanel () {
+    return `
     <form class="js-add-item">
           <label for="title">Title</label>
           <input type="text" class="js-title-input">
@@ -20,10 +24,10 @@ function renderAddNewTopPanel () {
           <input type="text" class="js-rating-input">
           <input type="submit" class="js-create-bookmark">
         </form>`;
-}
+  }
 
-function renderBaseMiddlePanel () {
-  return `
+  function renderBaseMiddlePanel () {
+    return `
     <form class="js-filter-bookmarks">
       <select name="filter">
         <option value="5-stars">5 Stars</option>
@@ -34,10 +38,10 @@ function renderBaseMiddlePanel () {
         <option value="Z-to-A">Z - A</option>
       </select>
     </form>`;
-}
+  }
 
-function renderBaseBottomPanel () {
-  return `
+  function renderBaseBottomPanel () {
+    return `
     <ul class="bookmarks">
       <li class="bookmark" data-item-id=${item.id}>
         Rating ${item.rating} Title ${item.title}
@@ -48,10 +52,10 @@ function renderBaseBottomPanel () {
         </label>  
       </li>
     </ul>`;
-}
+  }
 
-function renderCollapseBottomPanel () {
-  return `
+  function renderCollapseBottomPanel () {
+    return `
     <ul class="bookmarks">
       <li class="bookmark" data-item-id=${item.id}>
         Rating ${item.rating} Title ${item.title}
@@ -65,10 +69,10 @@ function renderCollapseBottomPanel () {
         </label>  
       </li>
     </ul>`;
-}
+  }
 
-function renderEditBottomPanel () {
-  return `
+  function renderEditBottomPanel () {
+    return `
     <ul class="bookmarks">
     <li class="bookmark" data-item-id=${item.id}>
       <form for="edit">
@@ -90,26 +94,38 @@ function renderEditBottomPanel () {
       </label>  
     </li>
   </ul>`;
-}
-
-function handleNewItemSubmit(){
-  $('.js-add-item').submit(function(event){
-    event.preventDefault();
-    const newItemTitle = $('.js-title-input').val();
-    $('.js-title-input').val('');
-    const newItemLink = $('.js-link-input').val();
-    $('.js-link-input').val('');
-    const newItemDescription = $('.js-description-input').val();
-    $('.js-description-input').val('');
-    const newItemRating = $('.js-rating-input').val();
-    $('.js-rating-input').val('');
-    const newItem = {
-      'title': newItemTitle,
-      'url': newItemLink,
-      'desc': newItemDescription,
-      'rating': newItemRating, 
-    }
-    api.createItem(newItem)
-
   }
-}
+
+  function handleNewItemSubmit(){
+    $('.js-add-item').submit(function(event){
+      event.preventDefault();
+      const newItemTitle = $('.js-title-input').val();
+      $('.js-title-input').val('');
+      const newItemLink = $('.js-link-input').val();
+      $('.js-link-input').val('');
+      const newItemDescription = $('.js-description-input').val();
+      $('.js-description-input').val('');
+      const newItemRating = $('.js-rating-input').val();
+      $('.js-rating-input').val('');
+      const newItem = {
+        'title': newItemTitle,
+        'url': newItemLink,
+        'desc': newItemDescription,
+        'rating': newItemRating, 
+      };
+      api.createItem(newItem);
+
+    });
+  }
+
+  function render() {
+    $('.js-top-panel').html(renderBaseTopPanel);
+    $('.js-middle-panel').html(renderBaseMiddlePanel);
+    $('.js-bottom-panel').html(renderBaseBottomPanel);
+  }
+
+  return {
+    render: render
+  };
+
+});
