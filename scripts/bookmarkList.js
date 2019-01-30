@@ -133,7 +133,7 @@ const bookmarkList = (function (){
       };
       api.createItem(newItem)
         .then((response)=> {
-          response.json();})
+          return response.json();})
         .then((responseJson)=>{
           store.addItem(responseJson);
           bookmarkList.render();  
