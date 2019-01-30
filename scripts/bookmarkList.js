@@ -1,4 +1,4 @@
-/* global store, $ */
+/* global store, api $ */
 'use strict';
 
 // eslint-disable-next-line no-unused-vars

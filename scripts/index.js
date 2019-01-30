@@ -1,4 +1,4 @@
-/* global bookmarkList, store */
+/* global bookmarkList, store, api */
 'use strict';
 
 $(document).ready(function() {
