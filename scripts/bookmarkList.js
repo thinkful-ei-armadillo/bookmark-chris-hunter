@@ -56,8 +56,15 @@ const bookmarkList = (function (){
   }
 
   function generateBookmarkItemsString(bookmarkList){
-    const items = bookmarkList.map((item) => generateItemElement(item));
-    return items.join('');  
+    const items = bookmarkList.map((item) => {
+      if (item.collapse === false) {
+        return generateItemElement(item);
+      }
+      else {
+        return renderCollapseBottomPanel(item);
+      }
+    });
+    return items.join('');
   }
 
   function renderBaseBottomPanel () {
@@ -70,7 +77,7 @@ const bookmarkList = (function (){
     
   }
 
-  function renderCollapseBottomPanel () {
+  function renderCollapseBottomPanel (item) {
     return `
     <ul class="bookmarks">
       <li class="bookmark" data-item-id=${item.id}>
@@ -119,7 +126,6 @@ const bookmarkList = (function (){
   function handleDeleteItemClicked(){
     $('.js-bottom-panel').on('click', '.js-delete', (event) =>{
       const id = getItemIdFromElement(event.currentTarget);
-      console.log(id); 
       api.deleteItem(id)
         .then(()=> {
           store.findAndDelete(id); 
@@ -133,7 +139,7 @@ const bookmarkList = (function (){
       const id = getItemIdFromElement(event.currentTarget);
       const item = store.findById(id);
       store.findAndUpdate(item, {collapse: !item.collapse});
-      renderDetails();
+      renderBaseBottomPanel(item);
     });
   }
 
@@ -172,14 +178,6 @@ const bookmarkList = (function (){
     $('.js-bottom-panel').html(renderBaseBottomPanel);
     bindEventListeners(); 
   }
-
-  function renderDetails() {
-    renderBaseTopPanel();
-    renderBaseMiddlePanel();
-    renderCollapseBottomPanel();
-    bindEventListeners();
-  }
-
 
   function handleNewItemButton() {
     $('.js-add-new-button').on('click', () => {

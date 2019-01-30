@@ -11,14 +11,12 @@ const store = (function () {
   };
 
   const findAndUpdate = function(id, newData) {
-    const item = this.findByID(id);
-    Object.assign(item, newData);
+    Object.assign(id, newData);
   };
 
   const findById = function(id) {
     return this.items.find(item => {
-      item.id === id;
-      console.log(item);
+      return item.id === id;
     });
   };
 
