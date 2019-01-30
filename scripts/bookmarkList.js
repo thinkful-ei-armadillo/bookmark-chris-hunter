@@ -75,9 +75,7 @@ const bookmarkList = (function (){
     <ul class="bookmarks">
       <li class="bookmark" data-item-id=${item.id}>
         Rating ${item.rating} Title ${item.title}
-        <div class="js-desciption">
-          Description ${item.description} Link ${item.link}
-        </div>
+        Description ${item.description} URL ${item.url}
         <button class="js-collapse" type="button">Details</button>
         <button class= "js-edit" type="button">Edit</button>
         <label for="delete">
@@ -128,7 +126,15 @@ const bookmarkList = (function (){
           render();
         }); 
     });
+  }
 
+  function handleCollapseItemClicked() {
+    $('.js-bottom-panel').on('click', '.js-collapse', (event) =>{
+      const id = getItemIdFromElement(event.currentTarget);
+      const item = store.findById(id);
+      store.findAndUpdate(item, {collapse: !item.collapse});
+      renderDetails();
+    });
   }
 
   function handleNewItemSubmit(){
@@ -167,6 +173,13 @@ const bookmarkList = (function (){
     bindEventListeners(); 
   }
 
+  function renderDetails() {
+    renderBaseTopPanel();
+    renderBaseMiddlePanel();
+    renderCollapseBottomPanel();
+    bindEventListeners();
+  }
+
 
   function handleNewItemButton() {
     $('.js-add-new-button').on('click', () => {
@@ -179,7 +192,8 @@ const bookmarkList = (function (){
   function bindEventListeners() {
     handleNewItemButton();
     handleNewItemSubmit();
-    handleDeleteItemClicked(); 
+    handleDeleteItemClicked();
+    handleCollapseItemClicked();
   }
 
   return {
