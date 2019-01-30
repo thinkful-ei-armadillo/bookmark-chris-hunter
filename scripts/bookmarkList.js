@@ -44,7 +44,7 @@ const bookmarkList = (function (){
   function generateItemElement(item){
     return `
     <ul class="bookmarks">
-      <li class="bookmark" data-item-id=item>
+      <li class="bookmark" data-item-id=${item.id}>
         Rating ${item.rating} Title ${item.title}
         <button class="js-collapse" type="button">Details</button>
         <button class= "js-edit" type="button">Edit</button>
@@ -112,6 +112,25 @@ const bookmarkList = (function (){
   </ul>`;
   }
 
+  function getItemIdFromElement(item){
+    return $(item)
+      .closest('.bookmark')
+      .data('item-id');
+  }
+
+  function handleDeleteItemClicked(){
+    $('.js-bottom-panel').on('click', '.js-delete', (event) =>{
+      const id = getItemIdFromElement(event.currentTarget);
+      console.log(id); 
+      api.deleteItem(id)
+        .then(()=> {
+          store.findAndDelete(id); 
+          render();
+        }); 
+    });
+
+  }
+
   function handleNewItemSubmit(){
     $('.js-top-panel').submit(function(event){
       event.preventDefault(); 
@@ -136,7 +155,7 @@ const bookmarkList = (function (){
           return response.json();})
         .then((responseJson)=>{
           store.addItem(responseJson);
-          bookmarkList.render();  
+          render();   
         }); 
     });
   }
@@ -145,7 +164,9 @@ const bookmarkList = (function (){
     $('.js-top-panel').html(renderBaseTopPanel);
     $('.js-middle-panel').html(renderBaseMiddlePanel);
     $('.js-bottom-panel').html(renderBaseBottomPanel);
+    bindEventListeners(); 
   }
+
 
   function handleNewItemButton() {
     $('.js-add-new-button').on('click', () => {
@@ -158,9 +179,11 @@ const bookmarkList = (function (){
   function bindEventListeners() {
     handleNewItemButton();
     handleNewItemSubmit();
+    handleDeleteItemClicked(); 
   }
 
   return {
+    getItemIdFromElement: getItemIdFromElement, 
     render: render,
     bindEventListeners: bindEventListeners
   };

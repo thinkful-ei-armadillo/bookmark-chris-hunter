@@ -19,9 +19,16 @@ const api = (
         body: newItemString,}); 
     };
 
+    const deleteItem = function(id){
+      return fetch(`${BASE_URL}/${id}`, {
+        method: 'DELETE',  
+      }); 
+    }; 
+
     return {
       createItem, 
-      getItems
+      getItems,
+      deleteItem,
     };
 
   })();
