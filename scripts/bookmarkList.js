@@ -100,8 +100,9 @@ const bookmarkList = (function (){
   function generateErrorPanel(message){
     return `
       <section class="error">
-      <button id="cancel error">Cancel</button>
-      
+        <button id="cancel-error">Cancel</button>
+        <p>${message}<p>
+      </section>
     `;
   } 
 
@@ -122,6 +123,14 @@ const bookmarkList = (function (){
   }
 
   function render() {
+    if(store.error){
+      const error = generateErrorPanel(store.error); 
+      $('.error-panel').html(error);
+    }
+    else{
+      $('.error-panel').empty(); 
+    }
+
     let items = [...store.items];
     const bookmarkListItemsString = generateBookmarkItemsString(items);
     if(add){
@@ -165,7 +174,11 @@ const bookmarkList = (function (){
           store.addItem(responseJson);
           add = false; 
           render();   
-        }); 
+        })
+        .catch((err) => {
+          store.setError(err.message);
+          render();
+        });  
     });
   }
 
@@ -181,7 +194,12 @@ const bookmarkList = (function (){
       api.deleteItem(id)
         .then(()=> {
           store.findAndDelete(id); 
-          render();}); 
+          render();
+        })
+        .catch((err)=>{
+          store.setError(err.message);
+          render(); 
+        });  
     });  
   }
 
@@ -227,8 +245,19 @@ const bookmarkList = (function (){
           store.findAndUpdate(item, editItem); 
           store.findAndUpdate(item, {editing: !item.editing});
           render(); 
+        })
+        .catch((err) => {
+          store.setError(err.message);
+          render(); 
         }); 
     });
+  }
+
+  function handleCloseError(){
+    $('.error-panel').on('click', '#cancel-error', () =>{
+      store.setError(null);
+      render(); 
+    }); 
   }
 
 
@@ -238,11 +267,11 @@ const bookmarkList = (function (){
     handleDeleteItemClicked();
     handleCollapseItemClicked();
     handleEditItemClicked();
-    handleEditItemSubmit();  
+    handleEditItemSubmit(); 
+    handleCloseError();  
   }
 
   return {
-    getItemIdFromElement, 
     render,
     bindEventListeners, 
   };
