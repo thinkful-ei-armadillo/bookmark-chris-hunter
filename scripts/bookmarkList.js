@@ -30,7 +30,7 @@ const bookmarkList = (function (){
   function generateMiddlePanel () {
     return `
     <form class="js-filter-bookmarks">
-      <select name="filter">
+      <select class="js-select" name="filter">
         <option value="All">All</option>
         <option value="5-stars">5 Stars</option>
         <option value="4-stars">4 Stars or higher</option>
@@ -223,6 +223,76 @@ const bookmarkList = (function (){
     });
   }
 
+  function compareValues(key, order='asc') {
+    return function(a, b) {
+      if(!a.hasOwnProperty(key) || 
+         !b.hasOwnProperty(key)) {
+        return 0; 
+      }
+      
+      const varA = (typeof a[key] === 'string') ? 
+        a[key].toUpperCase() : a[key];
+      const varB = (typeof b[key] === 'string') ? 
+        b[key].toUpperCase() : b[key];
+        
+      let comparison = 0;
+      if (varA > varB) {
+        comparison = 1;
+      } else if (varA < varB) {
+        comparison = -1;
+      }
+      return (
+        (order === 'desc') ? 
+          (comparison * -1) : comparison
+      );
+    };
+  }
+
+  function utilizeDropDown(){
+    $('.js-middle-panel').on('change', '.js-select', function(event){
+      event.preventDefault();
+      const selectedValue = $(event.target).val();
+      if (selectedValue === 'A-to-Z') {
+        store.items.sort(compareValues('title'));
+        render();
+      }
+      else if (selectedValue === 'Z-to-A') {
+        store.items.sort(compareValues('title', 'desc'));
+        render();
+      }
+      else if (selectedValue === '5-stars') {
+        const newStore = store.items.filter(rate => rate.rating === 5);
+        const bookmarkListItems = generateBookmarkItemsString(newStore);
+        $('.js-top-panel').html(generateBaseTopPanel);
+        $('.js-middle-panel').html(generateMiddlePanel);
+        $('.js-bottom-panel').html(bookmarkListItems);
+      }
+      else if (selectedValue === '4-stars') {
+        const newStore = store.items.filter(rate => rate.rating > 3);
+        const bookmarkListItems = generateBookmarkItemsString(newStore);
+        $('.js-top-panel').html(generateBaseTopPanel);
+        $('.js-middle-panel').html(generateMiddlePanel);
+        $('.js-bottom-panel').html(bookmarkListItems);
+      }
+      else if (selectedValue === '3-stars') {
+        const newStore = store.items.filter(rate => rate.rating > 2);
+        const bookmarkListItems = generateBookmarkItemsString(newStore);
+        $('.js-top-panel').html(generateBaseTopPanel);
+        $('.js-middle-panel').html(generateMiddlePanel);
+        $('.js-bottom-panel').html(bookmarkListItems);
+      }
+      else if (selectedValue === '2-stars') {
+        const newStore = store.items.filter(rate => rate.rating > 1);
+        const bookmarkListItems = generateBookmarkItemsString(newStore);
+        $('.js-top-panel').html(generateBaseTopPanel);
+        $('.js-middle-panel').html(generateMiddlePanel);
+        $('.js-bottom-panel').html(bookmarkListItems);
+      }
+      else if (selectedValue === 'All') {
+        render();
+      }
+    });
+  }
 
   function bindEventListeners() {
     handleNewItemClicked();
@@ -230,13 +300,14 @@ const bookmarkList = (function (){
     handleDeleteItemClicked();
     handleCollapseItemClicked();
     handleEditItemClicked();
-    handleEditItemSubmit();  
+    handleEditItemSubmit(); 
+    utilizeDropDown();
   }
 
   return {
     getItemIdFromElement, 
     render,
-    bindEventListeners, 
+    bindEventListeners,
   };
 
 })();
