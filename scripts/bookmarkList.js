@@ -79,7 +79,7 @@ const bookmarkList = (function (){
       <form for="edit">
         <label for="rating">Rating</label>
         <input type="number" class="js-edit-rating" value=${item.rating}
-        min= "0" max= "5">
+        min= "1" max= "5">
         <label for="title">Title</label>
         <input type="text" class="js-edit-title" value=${item.title}>
         <div class="js-desciption">
