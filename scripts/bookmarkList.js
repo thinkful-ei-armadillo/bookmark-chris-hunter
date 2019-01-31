@@ -97,6 +97,14 @@ const bookmarkList = (function (){
   </ul>`;
   }
 
+  function generateErrorPanel(message){
+    return `
+      <section class="error">
+      <button id="cancel error">Cancel</button>
+      
+    `;
+  } 
+
   function generateBookmarkItemsString(bookmarkList){
     const items = bookmarkList.map((item) => {
       if(item.editing)
