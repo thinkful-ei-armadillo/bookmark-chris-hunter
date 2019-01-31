@@ -16,13 +16,13 @@ const bookmarkList = (function (){
     return `
     <form class="js-add-item">
           <label for="title">Title</label>
-          <input type="text" value="Hats" class="js-title-input">
+          <input type="text" value="Hats" class="js-title-input" required>
           <label for="link">Link</label>
-          <input type="url" value="http://www.hats.com" class="js-link-input">
+          <input type="url" value="http://www.hats.com" class="js-link-input" required>
           <label for="description">Description</label>
-          <input type="text" value="Hats" class="js-description-input">
+          <input type="text" value="Hats" class="js-description-input" required>
           <label for="rating">Rating</label>
-          <input type="number" value="4" min="1" max="5" class="js-rating-input">
+          <input type="number" value="4" min="1" max="5" class="js-rating-input" required>
           <input type="submit" class="js-create-bookmark">
         </form>`;
   }
