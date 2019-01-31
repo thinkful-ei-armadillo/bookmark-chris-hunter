@@ -21,9 +21,9 @@ const store = (function () {
   };
 
   return{
-    findAndDelete, 
-    addItem,
     items: [],
+    addItem,
+    findAndDelete, 
     findAndUpdate,
     findById
   };})();

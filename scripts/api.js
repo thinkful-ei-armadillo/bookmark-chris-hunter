@@ -25,10 +25,21 @@ const api = (
       }); 
     }; 
 
+    const editItem = function(id, editItem){
+      const editItemString = JSON.stringify(editItem);
+      return fetch(`${BASE_URL}/${id}`,{
+        method: 'PATCH',
+        headers: {
+          'Content-type': 'application/json'
+        }, 
+        body: editItemString,});
+    };
+
     return {
-      createItem, 
       getItems,
+      createItem, 
       deleteItem,
+      editItem,
     };
 
   })();

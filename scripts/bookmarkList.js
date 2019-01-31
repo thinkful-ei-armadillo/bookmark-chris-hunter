@@ -56,7 +56,6 @@ const bookmarkList = (function (){
     </ul>`;
   }
 
-
   function generateItemExpandedElement (item) {
     return `
     <ul class="bookmarks">
@@ -72,6 +71,31 @@ const bookmarkList = (function (){
     </ul>`;
   }
 
+  function generateEditItem(item) {
+    return `
+    <ul class="bookmarks">
+    <li class="bookmark" data-item-id=${item.id}>
+      <form for="edit">
+        <label for="rating">Rating</label>
+        <input type="number" class="js-edit-rating" value=${item.rating}
+        min= "0" max= "5">
+        <label for="title">Title</label>
+        <input type="text" class="js-edit-title" value=${item.title}>
+        <div class="js-desciption">
+          <label for="description">Description</label>
+          <input type="text" class="js-edit-description" value=${item.desc}>
+          <label for="link">Link</label>
+          <input type="url" class="js-edit-link" value=${item.url}>
+        </div>
+      </form>
+      <input type="submit" class="js-submit-edit" value="Submit Changes">
+      <button class= "js-edit" type="button">Nevermind</button>
+      <label for="delete">
+        <input type="submit" value="Delete" class="js-delete">
+      </label>  
+    </li>
+  </ul>`;
+  }
 
   function generateBookmarkItemsString(bookmarkList){
     const items = bookmarkList.map((item) => {
@@ -102,28 +126,39 @@ const bookmarkList = (function (){
     $('.js-bottom-panel').html(bookmarkListItemsString); 
   }
 
-  function generateEditItem(item) {
-    return `
-    <ul class="bookmarks">
-    <li class="bookmark" data-item-id=${item.id}>
-      <form for="edit">
-        <label for="rating">Rating</label>
-        <input type="number" value=${item.rating}>
-        <label for="title">Title</label>
-        <input type="text" value=${item.title}>
-        <div class="js-desciption">
-          <label for="description">Description</label>
-          <input type="text" value=${item.desc}>
-          <label for="link">Link</label>
-          <input type="url" value=${item.url}>
-        </div>
-      </form>
-      <button class= "js-edit" type="button">Nevermind</button>
-      <label for="delete">
-        <input type="submit" value="Delete" class="js-delete">
-      </label>  
-    </li>
-  </ul>`;
+  function handleNewItemClicked() {
+    $('.js-top-panel').on('click', '.js-add-new-button', () => {
+      add = true;
+      render();  
+    });
+  }
+
+  function handleNewItemSubmit(){
+    $('.js-top-panel').submit(function(event){
+      event.preventDefault(); 
+      let newItemTitle = $('.js-title-input').val();
+      $('.js-title-input').val('');
+      let newItemLink = $('.js-link-input').val();
+      $('.js-link-input').val('');
+      let newItemDescription = $('.js-description-input').val();
+      $('.js-description-input').val('');
+      let newItemRating = $('.js-rating-input').val();
+      $('.js-rating-input').val('');
+      let newItem = {
+        title : newItemTitle,
+        url : newItemLink,
+        desc : newItemDescription,
+        rating : newItemRating,
+      };
+      api.createItem(newItem)
+        .then((response)=> {
+          return response.json();})
+        .then((responseJson)=>{
+          store.addItem(responseJson);
+          add = false; 
+          render();   
+        }); 
+    });
   }
 
   function getItemIdFromElement(item){
@@ -160,49 +195,42 @@ const bookmarkList = (function (){
     });
   }
 
-  function handleNewItemSubmit(){
-    $('.js-top-panel').submit(function(event){
+  function handleEditItemSubmit() {
+    $('.js-bottom-panel').on('click', '.js-submit-edit', function(event){
       event.preventDefault(); 
-      let newItemTitle = $('.js-title-input').val();
+      let editItemTitle = $('.js-edit-title').val();
       $('.js-title-input').val('');
-      let newItemLink = $('.js-link-input').val();
+      let editItemLink = $('.js-edit-link').val();
       $('.js-link-input').val('');
-      let newItemDescription = $('.js-description-input').val();
+      let editItemDescription = $('.js-edit-description').val();
       $('.js-description-input').val('');
-      let newItemRating = $('.js-rating-input').val();
+      let editItemRating = $('.js-edit-rating').val();
       $('.js-rating-input').val('');
-      let newItem = {
-        title : newItemTitle,
-        url : newItemLink,
-        desc : newItemDescription,
-        rating : newItemRating,
-        collapse : false,
-        edit : false
-      };
-      api.createItem(newItem)
-        .then((response)=> {
-          return response.json();})
-        .then((responseJson)=>{
-          store.addItem(responseJson);
-          add = false; 
-          render();   
+      const id = getItemIdFromElement(event.currentTarget);
+      let editItem = {
+        title: editItemTitle,
+        url: editItemLink,
+        desc: editItemDescription,
+        rating: editItemRating 
+      };   
+      api.editItem(id, editItem)
+        .then(()=>{
+          const item = store.findById(id);
+          store.findAndUpdate(item, editItem); 
+          store.findAndUpdate(item, {editing: !item.editing});
+          render(); 
         }); 
     });
   }
 
-  function handleNewItemClicked() {
-    $('.js-top-panel').on('click', '.js-add-new-button', () => {
-      add = true;
-      render();  
-    });
-  }
 
   function bindEventListeners() {
     handleNewItemClicked();
     handleNewItemSubmit();
     handleDeleteItemClicked();
     handleCollapseItemClicked();
-    handleEditItemClicked(); 
+    handleEditItemClicked();
+    handleEditItemSubmit();  
   }
 
   return {
