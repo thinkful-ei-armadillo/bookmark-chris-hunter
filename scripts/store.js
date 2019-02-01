@@ -1,6 +1,7 @@
 'use strict';
 
 const store = (function () {
+  
   const addItem = function(item){
     Object.assign(item, {editing: false, collapse : false});
     this.items.push(item);
@@ -20,10 +21,17 @@ const store = (function () {
     });
   };
 
+  const setError = function(error){
+    this.error = error; 
+  };
+
   return{
     items: [],
+    error: null, 
+
     addItem,
     findAndDelete, 
     findAndUpdate,
-    findById
+    findById,
+    setError,
   };})();

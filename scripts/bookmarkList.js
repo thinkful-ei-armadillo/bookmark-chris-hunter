@@ -16,15 +16,16 @@ const bookmarkList = (function (){
     return `
     <form class="js-add-item">
           <label for="title">Title</label>
-          <input type="text" value="Hats" class="js-title-input" required>
+          <input type="text" value="Hats" class="js-title-input">
           <label for="link">Link</label>
-          <input type="url" value="http://www.hats.com" class="js-link-input" required>
+          <input type="url" value="http://www.hats.com" class="js-link-input">
           <label for="description">Description</label>
-          <input type="text" value="Hats" class="js-description-input" required>
+          <input type="text" value="Hats" class="js-description-input">
           <label for="rating">Rating</label>
-          <input type="number" value="4" min="1" max="5" class="js-rating-input" required>
+          <input type="number" value="4" min="1" max="5" class="js-rating-input">
           <input type="submit" class="js-create-bookmark">
-        </form>`;
+        </form>
+        <button id="cancel-add">Cancel</button>`; 
   }
 
   function generateMiddlePanel () {
@@ -78,7 +79,7 @@ const bookmarkList = (function (){
       <form for="edit">
         <label for="rating">Rating</label>
         <input type="number" class="js-edit-rating" value=${item.rating}
-        min= "0" max= "5">
+        min= "1" max= "5">
         <label for="title">Title</label>
         <input type="text" class="js-edit-title" value=${item.title}>
         <div class="js-desciption">
@@ -89,13 +90,22 @@ const bookmarkList = (function (){
         </div>
       </form>
       <input type="submit" class="js-submit-edit" value="Submit Changes">
-      <button class= "js-edit" type="button">Nevermind</button>
+      <button class= "js-edit" type="button">Cancel</button>
       <label for="delete">
         <input type="submit" value="Delete" class="js-delete">
       </label>  
     </li>
   </ul>`;
   }
+
+  function generateErrorPanel(message){
+    return `
+      <section class="error">
+        <p>${message}<p>
+        <button id="cancel-error">Cancel</button>
+      </section>
+    `;
+  } 
 
   function generateBookmarkItemsString(bookmarkList){
     const items = bookmarkList.map((item) => {
@@ -114,6 +124,14 @@ const bookmarkList = (function (){
   }
 
   function render() {
+    if(store.error){
+      const error = generateErrorPanel(store.error); 
+      $('.error-panel').html(error);
+    }
+    else{
+      $('.error-panel').empty(); 
+    }
+
     let items = [...store.items];
     const bookmarkListItemsString = generateBookmarkItemsString(items);
     if(add){
@@ -151,13 +169,15 @@ const bookmarkList = (function (){
         rating : newItemRating,
       };
       api.createItem(newItem)
-        .then((response)=> {
-          return response.json();})
-        .then((responseJson)=>{
-          store.addItem(responseJson);
+        .then((newItem)=>{
+          store.addItem(newItem);
           add = false; 
           render();   
-        }); 
+        })
+        .catch((err) => {
+          store.setError(err.message);
+          render();
+        });  
     });
   }
 
@@ -173,7 +193,12 @@ const bookmarkList = (function (){
       api.deleteItem(id)
         .then(()=> {
           store.findAndDelete(id); 
-          render();}); 
+          render();
+        })
+        .catch((err)=>{
+          store.setError(err.message);
+          render(); 
+        });  
     });  
   }
 
@@ -218,6 +243,10 @@ const bookmarkList = (function (){
           const item = store.findById(id);
           store.findAndUpdate(item, editItem); 
           store.findAndUpdate(item, {editing: !item.editing});
+          render(); 
+        })
+        .catch((err) => {
+          store.setError(err.message);
           render(); 
         }); 
     });
@@ -293,6 +322,20 @@ const bookmarkList = (function (){
       }
     });
   }
+  function handleCloseError(){
+    $('.error-panel').on('click', '#cancel-error', () =>{
+      store.setError(null);
+      render(); 
+    }); 
+  }
+
+  function handleCloseAdd(){
+    $('.js-top-panel').on('click', '#cancel-add', () =>{
+      add = !add;
+      render(); 
+    });
+  }
+
 
   function bindEventListeners() {
     handleNewItemClicked();
@@ -302,10 +345,11 @@ const bookmarkList = (function (){
     handleEditItemClicked();
     handleEditItemSubmit(); 
     utilizeDropDown();
+    handleCloseError(); 
+    handleCloseAdd();  
   }
 
   return {
-    getItemIdFromElement, 
     render,
     bindEventListeners,
   };
