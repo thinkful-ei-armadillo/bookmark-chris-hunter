@@ -1,0 +1,15 @@
+* {
+    box-sizing: border-box;
+    text-align: center;
+  }
+
+li.bookmark {
+    list-style: none;
+  }
+
+.js-bottom-panel {
+    padding: 20px;
+    margin: auto;
+    background-color: lightblue;
+    width: 40%;
+  }
