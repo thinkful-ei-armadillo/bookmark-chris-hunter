@@ -47,7 +47,8 @@ const bookmarkList = (function (){
     return `
     <ul class="bookmarks">
       <li class="bookmark" data-item-id=${item.id}>
-         ${item.rating} ${item.title}
+         Rating: ${item.rating} | ${item.title}
+         <br>
         <button class="js-collapse" type="button">Details</button>
         <button class= "js-edit" type="button">Edit</button>
         <label for="delete">
@@ -61,8 +62,9 @@ const bookmarkList = (function (){
     return `
     <ul class="bookmarks">
       <li class="bookmark" data-item-id=${item.id}>
-         ${item.rating}  ${item.title}
+         Rating: ${item.rating} | ${item.title}
          "${item.desc}" <a href="${item.url}">${item.url}</a>
+         <br>
         <button class="js-collapse" type="button">Details</button>
         <button class= "js-edit" type="button">Edit</button>
         <label for="delete">
