@@ -1,5 +1,5 @@
-/* global store, api $ */
-'use strict';
+:wqa/* global store, api $ */
+:wqa'use strict';
 
 // eslint-disable-next-line no-unused-vars
 const bookmarkList = (function (){
@@ -142,6 +142,10 @@ const bookmarkList = (function (){
     }
     $('.js-middle-panel').html(generateMiddlePanel);
     $('.js-bottom-panel').html(bookmarkListItemsString);
+<<<<<<< HEAD
+=======
+
+>>>>>>> refs/remotes/origin/master
   }
 
   function handleNewItemClicked() {
@@ -307,6 +311,7 @@ const bookmarkList = (function (){
         $('.js-bottom-panel').html(bookmarkListItems);
         setSelect(selectedValue);
       }
+
       else if (selectedValue === '3-stars') {
         const newStore = store.items.filter(rate => rate.rating > 2);
         const bookmarkListItems = generateBookmarkItemsString(newStore);
@@ -341,6 +346,10 @@ const bookmarkList = (function (){
       add = !add;
       render(); 
     });
+  }
+  
+  function setSelect(selectedValue){
+    $('select').val(selectedValue); 
   }
 
   function setSelect(selectedValue){
