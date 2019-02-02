@@ -16,14 +16,14 @@ const bookmarkList = (function (){
     return `
     <form class="js-add-item">
           <label for="title">Title</label>
-          <input type="text" value="Hats" class="js-title-input">
+          <input type="text" value="Hats" class="js-title-input" id="title">
           <label for="link">Link</label>
-          <input type="url" value="http://www.hats.com" class="js-link-input">
+          <input type="url" value="http://www.hats.com" class="js-link-input" id="link">
           <label for="description">Description</label>
-          <input type="text" value="Hats" class="js-description-input">
+          <input type="text" value="Hats" class="js-description-input" id="description">
           <label for="rating">Rating</label>
-          <input type="number" value="4" min="1" max="5" class="js-rating-input">
-          <input type="submit" class="js-create-bookmark">
+          <input type="number" value="4" min="1" max="5" class="js-rating-input" id="rating">
+          <input type="submit" value= "submit" class="js-create-bookmark">
         </form>
         <button id="cancel-add">Cancel</button>`; 
   }
@@ -31,29 +31,28 @@ const bookmarkList = (function (){
   function generateMiddlePanel () {
     return `
     <form class="js-filter-bookmarks">
-      <select class="js-select" name="filter">
-        <option value="All">All</option>
-        <option value="5-stars">5 Stars</option>
-        <option value="4-stars">4 Stars or higher</option>
-        <option value="3-stars">3 Stars or higher</option>
-        <option value="2-stars">2 Stars or higher</option>
-        <option value="A-to-Z">A - Z</option>
-        <option value="Z-to-A">Z - A</option>
-      </select>
-    </form>`;
+      <label for="filter"><label>
+        <select class="js-select" name="filter" id="filter">
+          <option value="All">All</option>
+          <option value="5-stars">5 Stars</option>
+          <option value="4-stars">4 Stars or higher</option>
+          <option value="3-stars">3 Stars or higher</option>
+          <option value="2-stars">2 Stars or higher</option>
+          <option value="A-to-Z">A - Z</option>
+          <option value="Z-to-A">Z - A</option>
+        </select>
+      </form>`;
   }
 
   function generateItemElement(item){
     return `
     <ul class="bookmarks">
       <li class="bookmark" data-item-id=${item.id}>
-         Rating: ${item.rating} | ${item.title}
+         Rating: ${item.rating} <br> ${item.title}
          <br>
         <button class="js-collapse" type="button">Details</button>
         <button class= "js-edit" type="button">Edit</button>
-        <label for="delete">
-          <input type="submit" value="Delete" class="js-delete">
-        </label>  
+        <input type="submit" value="Delete" class="js-delete"> 
       </li>
     </ul>`;
   }
@@ -62,14 +61,11 @@ const bookmarkList = (function (){
     return `
     <ul class="bookmarks">
       <li class="bookmark" data-item-id=${item.id}>
-         Rating: ${item.rating} | ${item.title}
-         "${item.desc}" <a href="${item.url}">${item.url}</a>
-         <br>
+         Rating: ${item.rating}<br> ${item.title}<br>
+         "${item.desc}"<br> <a href="${item.url}">${item.url}</a> <br>
         <button class="js-collapse" type="button">Details</button>
         <button class= "js-edit" type="button">Edit</button>
-        <label for="delete">
-          <input type="submit" value="Delete" class="js-delete">
-        </label>  
+        <input type="submit" value="Delete" class="js-delete">  
       </li>
     </ul>`;
   }
@@ -79,23 +75,21 @@ const bookmarkList = (function (){
     <ul class="bookmarks">
     <li class="bookmark" data-item-id=${item.id}>
       <form for="edit">
-        <label for="rating">Rating</label>
+        <label for="edit-rating">Rating</label>
         <input type="number" class="js-edit-rating" value=${item.rating}
-        min= "1" max= "5">
-        <label for="title">Title</label>
-        <input type="text" class="js-edit-title" value=${item.title}>
+        min= "1" max= "5" id="edit-rating"><br>
+        <label for="edit-title">Title</label>
+        <input type="text" class="js-edit-title" value=${item.title} id="edit-title"><br>
         <div class="js-desciption">
-          <label for="description">Description</label>
-          <input type="text" class="js-edit-description" value=${item.desc}>
-          <label for="link">Link</label>
-          <input type="url" class="js-edit-link" value=${item.url}>
+          <label for="edit-description">Description</label>
+          <input type="text" class="js-edit-description" value=${item.desc} id="edit-description"><br>
+          <label for="edit-link">Link</label>
+          <input type="url" class="js-edit-link" value=${item.url} id="edit-link">
         </div>
       </form>
       <input type="submit" class="js-submit-edit" value="Submit Changes">
       <button class= "js-edit" type="button">Cancel</button>
-      <label for="delete">
-        <input type="submit" value="Delete" class="js-delete">
-      </label>  
+      <input type="submit" value="Delete" class="js-delete"> 
     </li>
   </ul>`;
   }
@@ -349,10 +343,7 @@ const bookmarkList = (function (){
   function setSelect(selectedValue){
     $('select').val(selectedValue); 
   }
-
-  function setSelect(selectedValue){
-    $('select').val(selectedValue); 
-  }
+ 
 
   function bindEventListeners() {
     handleNewItemClicked();

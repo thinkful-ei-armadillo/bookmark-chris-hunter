@@ -3,15 +3,18 @@
     text-align: center;
   }
 
+a{
+  color: beige; 
+}
+
 li.bookmark {
     list-style: none;
   }
 
 .js-bottom-panel {
-    padding: 20px;
     margin: auto;
     background-color: navy;
-    width: 40%;
+    font-size: 16px; 
   }
 
 li.bookmark {
@@ -38,3 +41,15 @@ h1 {
 select.js-select, button.js-add-new-button {
   background: lightblue;
 }
+
+.js-middle-panel{
+  margin: 20px;  
+}
+
+
+@media only screen and (min-width: 600px){
+  .js-bottom-panel{
+    font-size: 24px;  
+  }
+}
+
