@@ -1,6 +1,7 @@
 * {
     box-sizing: border-box;
     text-align: center;
+    background-color: -moz-linear-gradient(yellow);
   }
 
 li.bookmark {
@@ -10,6 +11,31 @@ li.bookmark {
 .js-bottom-panel {
     padding: 20px;
     margin: auto;
-    background-color: lightblue;
+    background-color: navy;
     width: 40%;
   }
+
+li.bookmark {
+  color: beige;
+  }
+
+button.js-collapse, button.js-edit {
+  background: lightblue;
+}
+
+input.js-delete, button#cancel-add {
+  background: darkred;
+  color: white;
+}
+
+input.js-submit-edit, input.js-create-bookmark {
+  background: lightgreen;
+}
+
+h1 {
+  color: navy;
+}
+
+select.js-select, button.js-add-new-button {
+  background: lightblue;
+}
