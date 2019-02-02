@@ -16,11 +16,11 @@ const bookmarkList = (function (){
     return `
     <form class="js-add-item">
           <label for="title">Title</label>
-          <input type="text" value="Hats" class="js-title-input" id="title">
+          <input type="text" class="js-title-input" id="title">
           <label for="link">Link</label>
-          <input type="url" value="http://www.hats.com" class="js-link-input" id="link">
+          <input type="url" class="js-link-input" id="link">
           <label for="description">Description</label>
-          <input type="text" value="Hats" class="js-description-input" id="description">
+          <input type="text" class="js-description-input" id="description">
           <label for="rating">Rating</label>
           <input type="number" value="4" min="1" max="5" class="js-rating-input" id="rating">
           <input type="submit" value= "submit" class="js-create-bookmark">
@@ -41,7 +41,7 @@ const bookmarkList = (function (){
           <option value="A-to-Z">A - Z</option>
           <option value="Z-to-A">Z - A</option>
         </select>
-      </form>`;
+    </form>`;
   }
 
   function generateItemElement(item){
