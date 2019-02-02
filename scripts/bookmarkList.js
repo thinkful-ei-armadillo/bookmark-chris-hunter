@@ -141,7 +141,8 @@ const bookmarkList = (function (){
       $('.js-top-panel').html(generateBaseTopPanel); 
     }
     $('.js-middle-panel').html(generateMiddlePanel);
-    $('.js-bottom-panel').html(bookmarkListItemsString); 
+    $('.js-bottom-panel').html(bookmarkListItemsString);
+
   }
 
   function handleNewItemClicked() {
@@ -284,10 +285,12 @@ const bookmarkList = (function (){
       if (selectedValue === 'A-to-Z') {
         store.items.sort(compareValues('title'));
         render();
+        setSelect(selectedValue);
       }
       else if (selectedValue === 'Z-to-A') {
         store.items.sort(compareValues('title', 'desc'));
         render();
+        setSelect(selectedValue);
       }
       else if (selectedValue === '5-stars') {
         const newStore = store.items.filter(rate => rate.rating === 5);
@@ -295,6 +298,7 @@ const bookmarkList = (function (){
         $('.js-top-panel').html(generateBaseTopPanel);
         $('.js-middle-panel').html(generateMiddlePanel);
         $('.js-bottom-panel').html(bookmarkListItems);
+        setSelect(selectedValue);
       }
       else if (selectedValue === '4-stars') {
         const newStore = store.items.filter(rate => rate.rating > 3);
@@ -302,13 +306,16 @@ const bookmarkList = (function (){
         $('.js-top-panel').html(generateBaseTopPanel);
         $('.js-middle-panel').html(generateMiddlePanel);
         $('.js-bottom-panel').html(bookmarkListItems);
+        setSelect(selectedValue);
       }
+
       else if (selectedValue === '3-stars') {
         const newStore = store.items.filter(rate => rate.rating > 2);
         const bookmarkListItems = generateBookmarkItemsString(newStore);
         $('.js-top-panel').html(generateBaseTopPanel);
         $('.js-middle-panel').html(generateMiddlePanel);
         $('.js-bottom-panel').html(bookmarkListItems);
+        setSelect(selectedValue);
       }
       else if (selectedValue === '2-stars') {
         const newStore = store.items.filter(rate => rate.rating > 1);
@@ -316,9 +323,11 @@ const bookmarkList = (function (){
         $('.js-top-panel').html(generateBaseTopPanel);
         $('.js-middle-panel').html(generateMiddlePanel);
         $('.js-bottom-panel').html(bookmarkListItems);
+        setSelect(selectedValue);
       }
       else if (selectedValue === 'All') {
         render();
+        setSelect(selectedValue);
       }
     });
   }
@@ -334,6 +343,10 @@ const bookmarkList = (function (){
       add = !add;
       render(); 
     });
+  }
+  
+  function setSelect(selectedValue){
+    $('select').val(selectedValue); 
   }
 
 
