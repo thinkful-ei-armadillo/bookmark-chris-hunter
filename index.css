@@ -3,18 +3,52 @@
     text-align: center;
   }
 
+  html {
+    background-image: url("https://user-images.githubusercontent.com/45447942/52427851-05256380-2abe-11e9-996c-52c0198c7cf7.jpg");
+  }
+
 a{
   color: beige; 
 }
 
+main, header, .error-panel, .js-top-panel, .js-middle-panel, .js-bottom-panel, form {
+  border: solid beige;
+  background: beige;
+}
+
+input {
+  border: solid, lightblue;
+  background: white;
+  color: navy;
+}
+
+a, label {
+  background: beige;
+  color: navy;
+}
+
+button {
+  background: beige;
+}
+
+.js-desciption {
+  background: beige;
+  color: navy;
+}
+
+body {
+  border: solid beige;
+}
+
 li.bookmark {
     list-style: none;
+    background: navy;
   }
 
 .js-bottom-panel {
     margin: auto;
     background-color: navy;
-    font-size: 16px; 
+    font-size: 16px;
   }
 
 li.bookmark {
@@ -31,11 +65,14 @@ input.js-delete, button#cancel-add {
 }
 
 input.js-submit-edit, input.js-create-bookmark {
-  background: lightgreen;
+  background: darkgreen;
+  color: white;
 }
 
 h1 {
   color: navy;
+  border: hidden;
+  background: beige;
 }
 
 select.js-select, button.js-add-new-button {
@@ -43,7 +80,7 @@ select.js-select, button.js-add-new-button {
 }
 
 .js-middle-panel{
-  margin: 20px;  
+  margin: 20px;
 }
 
 
@@ -53,3 +90,6 @@ select.js-select, button.js-add-new-button {
   }
 }
 
+.js-top-panel{
+  margin: 20px;
+}

@@ -18,11 +18,11 @@ const bookmarkList = (function (){
           <label for="title">Title</label>
           <input type="text" class="js-title-input" id="title">
           <label for="link">Link</label>
-          <input type="url" class="js-link-input" id="link">
+          <input type="url" value="http://" class="js-link-input" id="link">
           <label for="description">Description</label>
           <input type="text" class="js-description-input" id="description">
           <label for="rating">Rating</label>
-          <input type="number" value="4" min="1" max="5" class="js-rating-input" id="rating">
+          <input type="number" value="3" min="1" max="5" class="js-rating-input" id="rating">
           <input type="submit" value= "submit" class="js-create-bookmark">
         </form>
         <button id="cancel-add">Cancel</button>`; 
